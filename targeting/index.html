@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="icon" sizes="32x32" href="/favicon.svg" />
+		<link rel="icon" sizes="192x192" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/favicon.svg" />
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.svg" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<title>Growzy || Targeting</title>
+
+		<style>
+			body {
+				overflow: hidden;
+			}
+
+			body.loaded {
+				overflow: auto;
+			}
+			
+			body::-webkit-scrollbar {
+				width: 7px;
+				height: 7px;
+			}
+
+			body::-webkit-scrollbar-thumb {
+				background-color: #000;
+				border-radius: 15px;
+			}
+
+			body::-webkit-scrollbar-track {
+				background-color: #fff;
+			}
+			
+			.preloader {
+				position: fixed;
+				top: 0;
+				left: 0;
+				display: flex;
+				min-width: 360px;
+				width: 100vw;
+				height: 100vh;
+				transition: transform .4s;
+				background-color: #F3F3F4;
+				box-shadow: 0 0 5px rgba(#000, .5);
+				z-index: 100;
+			}
+
+			.loaded .preloader {
+				transform: translateY(-120%);
+			}
+
+			.preloader__inner {
+				display: flex;
+				align-items: center;
+				margin: auto;
+			}
+
+			.preloader__logo {
+				width: 240px;
+				height: 37px;
+				color: #000;
+			}
+
+			.preloader__spinner {
+				margin-left: 30px;
+				color: #2174f5;
+			}
+		</style>
+		<script type="module" crossorigin src="/assets/main-DyQtaYES.js"></script>
+		<link rel="stylesheet" crossorigin href="/assets/main-DIRFdkLA.css">
+	</head>
+	<body>
+		<div class="page__wrapper">
+			<header class="header">
+				<div class="page__container">
+					<div class="header__inner">
+						<div class="header__logo">
+							<a href="/" class="header__logo-link">
+								<svg><use href="#sprite-logo"></use></svg>
+							</a>
+						</div>
+			
+						<nav class="header__nav">
+							<ul class="header__menu">
+								<li class="header__menu-item">
+									<a href="#services" class="header__menu-link">
+										<span>Послуги</span>
+										<svg><use xlink:href="#sprite-arrow"></use></svg>
+									</a>
+			
+									<div class="header__subnav">
+										<ul class="header__submenu">
+											<li class="header__submenu-item">
+												<a href="/targeting.html" class="header__submenu-link">
+													<span>Таргетингова реклама</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Контекстна та медійна реклама</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>SEO-просування сайтів</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>SMM просування</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Аудит</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Розробка стратегій маркетингу та бренду</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Просування мобільних застосунків</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Розробка</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+			
+											<li class="header__submenu-item">
+												<a href="#" class="header__submenu-link">
+													<span>Digital аналітика</span>
+													<svg><use xlink:href="#sprite-arrow-right"></use></svg>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</li>
+			
+								<li class="header__menu-item">
+									<a href="#about" class="header__menu-link">Про нас</a>
+								</li>
+			
+								<li class="header__menu-item">
+									<a href="#cause" class="header__menu-link">Кейси</a>
+								</li>
+			
+								<li class="header__menu-item">
+									<a href="#reviews" class="header__menu-link">Клієнти та відгуки</a>
+								</li>
+			
+								<li class="header__menu-item">
+									<a href="#career" class="header__menu-link">Кар'єра</a>
+								</li>
+			
+								<li class="header__menu-item">
+									<a href="#blog" class="header__menu-link">Блог</a>
+								</li>
+							</ul>
+						</nav>
+			
+						<div class="header__actions">
+							<a href="#" class="page__button page__button_blue header__button">Зв'язатися з нами</a>
+							<a href="#sidebar" class="header__humburger">
+								<svg><use xlink:href="#sprite-humburger"></use></svg>
+							</a>
+						</div>
+					</div>
+				</div>
+			</header>			<div class="preloader">
+				<div class="preloader__inner">
+					<div class="preloader__logo">
+						<svg><use href="#sprite-logo"></use></svg>
+					</div>
+			
+					<div class="preloader__spinner">
+						<div class="spinner-border" role="status"></div>
+					</div>
+				</div>
+			</div>
+			<main class="page__main">
+				<section class="targeting">
+					<div class="page__container">
+						<div class="targeting__inner">
+				
+						</div>
+					</div>
+				</section>			</main>
+
+			<footer class="footer">
+				<div class="page__container">
+					<div class="footer__inner">
+						<div class="footer__left">
+							<div class="footer__logo">
+								<a href="/" class="footer__logo-link">
+									<svg><use xlink:href="#sprite-logo"></use></svg>
+								</a>
+							</div>
+							
+							<div class="footer__social">
+								<a href="https://www.facebook.com/ghack.agency" class="footer__social-link" target="_blank">
+									<svg><use xlink:href="#sprite-facebook"></use></svg>
+								</a>
+			
+								<a href="https://www.instagram.com/growthy_digital" class="footer__social-link" target="_blank">
+									<svg><use xlink:href="#sprite-instagram"></use></svg>
+								</a>
+			
+								<a href="https://t.me/ghack1" class="footer__social-link" target="_blank">
+									<svg><use xlink:href="#sprite-telegram"></use></svg>
+								</a>
+			
+								<a href="https://maps.app.goo.gl/wmf3c3pePpdX1RTU7" class="footer__map-link" target="_blank">
+									<svg><use xlink:href="#sprite-map"></use></svg>
+								</a>
+							</div>
+			
+							<div class="footer__email">
+								<a href="mailto:office@ghack.agency" class="footer__email-link">office@ghack.agency</a>
+							</div>
+			
+							<div class="footer__copy">
+								<p>2024 © Усі права захищені</p>
+							</div>
+						</div>
+			
+						<nav class="footer__nav">
+							<ul class="footer__menu">
+								<li class="footer__menu-item">
+									<a href="#services" class="footer__menu-link">
+										<span>Послуги</span>
+										<svg><use xlink:href="#sprite-arrow"></use></svg>
+									</a>
+								</li>
+			
+								<li class="footer__menu-item">
+									<a href="#about" class="footer__menu-link">Про нас</a>
+								</li>
+			
+								<li class="footer__menu-item">
+									<a href="#cause" class="footer__menu-link">Кейси</a>
+								</li>
+			
+								<li class="footer__menu-item">
+									<a href="#reviews" class="footer__menu-link">Клієнти та відгуки</a>
+								</li>
+			
+								<li class="footer__menu-item">
+									<a href="#career" class="footer__menu-link">Кар'єра</a>
+								</li>
+			
+								<li class="footer__menu-item">
+									<a href="#blog" class="footer__menu-link">Блог</a>
+								</li>
+							</ul>
+						</nav>
+			
+						<div class="footer__right">
+							<div class="footer__email">
+								<a href="mailto:office@ghack.agency" class="footer__email-link">office@ghack.agency</a>
+							</div>
+			
+							<div class="footer__map">
+								<a href="https://maps.app.goo.gl/wmf3c3pePpdX1RTU7" class="footer__map-link" target="_blank">
+									<svg><use xlink:href="#sprite-map"></use></svg>
+								</a>
+							</div>
+			
+							<div class="footer__phone">
+								<a href="tel:+38 (066) 072 54 74" class="footer__phone-link">+38 (066) 072 54 74</a>
+							</div>
+			
+							<div class="footer__addres">
+								<p>Київ, Воздвиженьска, 41</p>
+							</div>
+			
+							<div class="footer__time">
+								<p>09:00 - 18:00 (Пн-Пт)</p>
+							</div>
+			
+							<div class="footer__copy">
+								<p>2024 © Усі права захищені</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+
+	</body>
+</html>
