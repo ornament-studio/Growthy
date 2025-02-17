@@ -48,11 +48,15 @@ $value: map.get($breakpoints, $breakpoint);
 
 @keyframes bounce {
 	0% {
-		transform: translateY(0);
+		transform: translateX(-50%) translateY(0);
 	}
 
 	50% {
-		transform: translateY(9px) scale(0.9);
+		transform: translateX(-50%) translateY(9px) scale(0.9);
+	}
+
+	100% {
+		transform: translateX(-50%) translateY(0);
 	}
 }
 
@@ -63,6 +67,20 @@ $value: map.get($breakpoints, $breakpoint);
 
 	50% {
 		box-shadow: 0 0 0 25px rgba(#296BFD, 0);
+	}
+
+	100% {
+		box-shadow: 0 0 0 0 rgba(#296BFD, 0);
+	}
+}
+
+@keyframes pulse-shadow-mob {
+	0% {
+		box-shadow: 0 0 0 0 rgba(#296BFD, 1);
+	}
+
+	50% {
+		box-shadow: 0 0 0 15px rgba(#296BFD, 0);
 	}
 
 	100% {
@@ -90,6 +108,7 @@ p {
 	margin: 0;
 	font-size: inherit;
 	font-weight: inherit;
+	line-height: inherit;
 }
 
 img {
@@ -116,7 +135,7 @@ svg {
 	}
 
 	&__main {
-		overflow: hidden;
+		position: relative;
 	}
 
 	&__container {
@@ -158,7 +177,7 @@ svg {
 		line-height: 16px;
 		text-decoration: none;
 		text-align: center;
-		transition: border-color .3s;
+		transition: background-color .3s, border-color .3s, color .3s;
 		background-color: #d7d9db;
 		border: 1px solid #d7d9db;
 		border-radius: 40px;
@@ -174,23 +193,21 @@ svg {
 		}
 
 		&:active {
+			transition: initial;
 			background-color: #2174f5;
 			border-color: #000;
 			color: #fff;
-
-			@include responsive(md) {
-				border-color: #2174f5;
-			}
 		}
 
 		&_blue {
 			background-color: #2174f5;
+			border-color: #2174f5;
 			color: #fff;
 
 			&:hover {
 				border-color: #000;
 			}
-	
+
 			&:active {
 				background-color: #000;
 				border-color: #000;
@@ -199,12 +216,13 @@ svg {
 
 		&_black {
 			background-color: #181717;
+			border-color: #181717;
 			color: #fff;
 
 			&:hover {
 				border-color: #2174f5;
 			}
-	
+
 			&:active {
 				background-color: #2174f5;
 				border-color: #2174f5;
@@ -317,7 +335,7 @@ svg {
 					border-color: #2174F5 !important;
 					border-radius: 16px;
 
-					& + .accordion-item {
+					&+.accordion-item {
 						border-top-color: transparent !important;
 					}
 				}
@@ -401,13 +419,13 @@ svg {
 				top: 0 !important;
 				height: 18px;
 				--swiper-pagination-bullet-horizontal-gap: 10px;
-	
+
 				&-bullet {
 					width: 18px;
 					height: 18px;
 					background-color: #b6b6b8;
 					opacity: 1;
-	
+
 					&-active {
 						background-color: #181717;
 					}
@@ -415,6 +433,7 @@ svg {
 			}
 
 			&-button {
+
 				&-next,
 				&-prev {
 					position: static;
@@ -463,6 +482,38 @@ svg {
 			}
 		}
 	}
+
+	&__bg {
+		position: relative;
+		z-index: 1;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 50%;
+			display: block;
+			min-width: 360px;
+			width: 100%;
+			max-width: 1400px;
+			height: 100%;
+			transform: translateX(-50%);
+			background-color: #272525;
+			background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.45));
+			border: 1px solid #464646;
+			border-radius: 60px 60px 0 0;
+			z-index: -1;
+
+			@include responsive(lg) {
+				border-left: 0;
+				border-right: 0;
+			}
+	
+			@include responsive(xs) {
+				border-radius: 30px 30px 0 0;
+			}
+		}
+	}
 }
 
 //header
@@ -491,7 +542,6 @@ svg {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		height: 50px;
 	}
 
 	&__logo {
@@ -550,7 +600,13 @@ svg {
 			padding: 10px 0;
 			text-decoration: none;
 			outline: none;
+			transition: color .3s;
 			color: #0f0f0f;
+			cursor: pointer;
+
+			&:hover {
+				color: #007bff;
+			}
 
 			svg {
 				width: 10px;
@@ -627,6 +683,8 @@ svg {
 	&__humburger {
 		display: none;
 		padding: 21px 17px;
+		background-color: #f3f3f4;
+		border: none;
 
 		@include responsive(lg) {
 			display: flex;
@@ -644,7 +702,7 @@ svg {
 .hero {
 	padding-top: 30px;
 	background-color: #f3f3f4;
-	
+
 	&__inner {
 		display: flex;
 		flex-direction: column;
@@ -689,7 +747,7 @@ svg {
 		padding: 28px 0 32px;
 		margin-top: 35px;
 		z-index: 1;
-		
+
 		@include responsive(sm) {
 			padding: 0;
 			margin-top: 32px;
@@ -741,16 +799,25 @@ svg {
 	&__actions {
 		display: flex;
 		justify-content: center;
+		width: 100%;
 		gap: 14px;
 		margin-top: 32px;
 
+		@include responsive(sm) {
+			width: calc(100% + 10px);
+			margin: 32px -5px 0;
+			max-width: 378px;
+		}
+
 		@include responsive(xs) {
+			max-width: 369px;
 			gap: 5px;
 		}
 	}
 
 	&__btn {
 		@include responsive(sm) {
+			flex-grow: 1;
 			min-width: unset;
 			font-size: 13px;
 			padding: 16px;
@@ -810,7 +877,7 @@ svg {
 		align-items: center;
 		width: 100%;
 		max-width: 214px;
-		transition: transform .3s, visibility .1s, opacity .1s;
+		transition: transform 1s ease, visibility .2s, opacity .2s;
 		transform: translateY(300px);
 		visibility: hidden;
 		opacity: 0;
@@ -820,9 +887,6 @@ svg {
 
 		@include responsive(lg) {
 			position: static;
-			transform: translateY(0) !important;
-			visibility: visible !important;
-			opacity: 1 !important;
 		}
 
 		@include responsive(sm) {
@@ -838,7 +902,7 @@ svg {
 				order: 1;
 			}
 		}
-		
+
 		&:nth-child(2) {
 			top: 0px;
 			left: 234px;
@@ -847,7 +911,7 @@ svg {
 				order: 5;
 			}
 		}
-		
+
 		&:nth-child(3) {
 			top: 284px;
 			left: 234px;
@@ -856,7 +920,7 @@ svg {
 				order: 6;
 			}
 		}
-		
+
 		&:nth-child(4) {
 			top: 68px;
 			left: 468px;
@@ -865,7 +929,7 @@ svg {
 				order: 4;
 			}
 		}
-		
+
 		&:nth-child(5) {
 			top: 216px;
 			left: 468px;
@@ -874,7 +938,7 @@ svg {
 				order: 3;
 			}
 		}
-		
+
 		&:nth-child(6) {
 			top: 0px;
 			left: 702px;
@@ -883,7 +947,7 @@ svg {
 				order: 2;
 			}
 		}
-		
+
 		&:nth-child(7) {
 			top: 284px;
 			left: 702px;
@@ -892,7 +956,7 @@ svg {
 				order: 7;
 			}
 		}
-		
+
 		&:nth-child(8) {
 			top: 83px;
 			left: 936px;
@@ -981,7 +1045,7 @@ svg {
 	@include responsive(xs) {
 		padding-top: 50px;
 	}
-	
+
 	.page-home & {
 		padding-top: 200px;
 
@@ -992,6 +1056,10 @@ svg {
 		@include responsive(xs) {
 			padding-top: 50px;
 		}
+	}
+
+	.page-targeting & {
+		padding-bottom: 32px;
 	}
 
 	&__inner {
@@ -1160,7 +1228,7 @@ svg {
 	&__desc {
 		margin-top: 20px;
 		color: #929292;
-		
+
 		@include responsive(xs) {
 			margin-top: 12px;
 			font-size: 14px;
@@ -1171,6 +1239,7 @@ svg {
 		&-link {
 			padding: 21px 26px;
 			font-size: 15px;
+			border-color: #fff;
 
 			&:hover {
 				border-color: #fff;
@@ -1263,6 +1332,10 @@ svg {
 			font-size: 25px;
 			text-align: center;
 		}
+
+		.page-targeting & {
+			text-align: center;
+		}
 	}
 
 	&__content {
@@ -1281,6 +1354,8 @@ svg {
 	}
 
 	&__details {
+		position: sticky;
+		top: 130px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -1288,7 +1363,6 @@ svg {
 		max-width: 490px;
 		min-height: 360px;
 		padding: 32px 0;
-		background-image: url('/images/service-bg.jpg');
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -1299,6 +1373,7 @@ svg {
 		}
 
 		@include responsive(md) {
+			position: static;
 			display: none;
 			margin: 30px auto 0;
 		}
@@ -1306,6 +1381,14 @@ svg {
 		@include responsive(xs) {
 			min-height: 253px;
 			margin-top: 20px;
+		}
+
+		&_blue {
+			background-image: url('/images/service-bg.jpg');
+		}
+
+		&_yellow {
+			background-image: url('/images/service-bg-yellow.jpg');
 		}
 	}
 
@@ -1344,6 +1427,10 @@ svg {
 			font-size: 14px;
 		}
 
+		.service__details_yellow & {
+			color: #000;
+		}
+
 		h3 {
 			font-size: 24px;
 			font-weight: 600;
@@ -1374,13 +1461,27 @@ svg {
 				font-size: 13px;
 			}
 
+			.service__details_yellow & {
+				border-color: #000;
+				color: #000;
+			}
+
 			&:hover {
 				border-color: #fff;
+
+				.service__details_yellow & {
+					border-color: #000;
+				}
 			}
 
 			&:active {
 				background-color: #fff;
 				color: #000;
+
+				.service__details_yellow & {
+					background-color: #007bff;
+					color: #fff;
+				}
 			}
 		}
 	}
@@ -1446,6 +1547,7 @@ svg {
 .values {
 	padding-top: 80px;
 	background-color: #0A0A0A;
+	overflow: hidden;
 
 	@include responsive(xs) {
 		padding-top: 50px;
@@ -1517,12 +1619,13 @@ svg {
 	}
 
 	&__card {
-		position: relative;
-		left: 2000px;
 		width: 100%;
 		max-width: 240px;
 		padding: 32px 10px 24px 32px;
-		transition: background-color .3s, border-color .3s, left .8s ease-in-out;
+		transition: background-color .3s, border-color .3s, transform .8s ease, visibility .2s, opacity .2s;
+		transform: translateX(300px);
+		visibility: hidden;
+		opacity: 0;
 		background-color: #181717;
 		border: 1px solid #464646;
 		border-radius: 16px;
@@ -1532,7 +1635,9 @@ svg {
 		}
 
 		&.animated {
-			left: 0;
+			transform: translateX(0);
+			visibility: visible;
+			opacity: 1;
 		}
 
 		&:hover {
@@ -1626,39 +1731,21 @@ svg {
 	}
 
 	&__content {
-		position: relative;
-		padding: 100px 0 130px;
 		margin-top: 50px;
-		z-index: 1;
-
-		@include responsive(lg) {
-			padding: 80px 0 100px;
-		}
 
 		@include responsive(xs) {
-			padding: 40px 0 50px;
 			margin-top: 32px;
 		}
 
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 50%;
-			display: block;
-			min-width: 360px;
-			width: 100vw;
-			max-width: 1400px;
-			height: 100%;
-			transform: translateX(-50%);
-			background-color: #272525;
-			background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.45));
-			border: 1px solid #464646;
-			border-radius: 60px 60px 0 0;
-			z-index: -1;
+		&-inner {
+			padding: 100px 0 130px;
 
+			@include responsive(lg) {
+				padding: 80px 0 100px;
+			}
+	
 			@include responsive(xs) {
-				border-radius: 30px 30px 0 0;
+				padding: 40px 0 50px;
 			}
 		}
 	}
@@ -1704,7 +1791,7 @@ svg {
 		@include responsive(sm) {
 			font-size: 20px;
 		}
-		
+
 		@include responsive(xs) {
 			margin-top: 30px;
 			font-size: 16px;
@@ -1734,7 +1821,7 @@ svg {
 		align-items: flex-start;
 		justify-content: center;
 		margin-top: 100px;
-		
+
 		@include responsive(lg) {
 			flex-wrap: wrap;
 			gap: 15px 50px;
@@ -1779,7 +1866,7 @@ svg {
 			@include responsive(sm) {
 				font-size: 32px;
 			}
-	
+
 			@include responsive(xs) {
 				font-size: 25px;
 			}
@@ -1798,7 +1885,7 @@ svg {
 				margin-top: 10px;
 				font-size: 14px;
 			}
-	
+
 			@include responsive(xs) {
 				max-width: 120px;
 				margin-top: 8px;
@@ -1811,6 +1898,7 @@ svg {
 //cases
 .cases {
 	padding: 90px 0;
+	overflow: hidden;
 
 	@include responsive(xs) {
 		padding: 50px 0;
@@ -1861,7 +1949,6 @@ svg {
 		position: relative;
 		display: flex;
 		justify-content: flex-end;
-		height: 51px;
 	}
 
 	&__slider {
@@ -2085,7 +2172,8 @@ svg {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		display: block;
+		// display: block;
+		display: none;
 		font-size: 0;
 	}
 }
@@ -2094,6 +2182,7 @@ svg {
 .cooperation {
 	padding-top: 90px;
 	background-color: #0A0A0A;
+	overflow: hidden;
 	color: #fff;
 
 	@include responsive(xs) {
@@ -2192,7 +2281,7 @@ svg {
 			content: '';
 			position: absolute;
 			top: -16px;
-			left: calc(50% - 32px);
+			left: 50%;
 			display: block;
 			width: 65px;
 			height: 36px;
@@ -2224,6 +2313,7 @@ svg {
 		color: #929292;
 		z-index: 1;
 		perspective: 800px;
+		cursor: pointer;
 
 		@include responsive(xs) {
 			min-height: 80px;
@@ -2300,45 +2390,54 @@ svg {
 
 //roadmap
 .roadmap {
-	position: relative;
-	padding: 40px 0 100px;
-	width: 100%;
-	max-width: 1155px;
-	margin: 0 auto;
-	z-index: 1;
+	&__inner {
+		width: 100%;
+		max-width: 1155px;
+		padding: 40px 0 100px;
+		margin: 0 auto;
 
-	@include responsive(lg) {
-		display: none;
-	}
-
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 50%;
-		display: block;
-		min-width: 360px;
-		width: 100vw;
-		max-width: 1400px;
-		height: 100%;
-		transform: translateX(-50%);
-		background-color: #272525;
-		background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0.45));
-		border: 1px solid #464646;
-		border-radius: 60px 60px 0 0;
-		z-index: -1;
+		@include responsive(xs) {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 30px 0 50px;
+		}
 	}
 
 	&__title {
 		font-size: 48px;
 		font-weight: 600;
 		color: #2174F5;
+
+		@include responsive(md) {
+			text-align: center;
+		}
+
+		@include responsive(sm) {
+			font-size: 36px;
+		}
+
+		@include responsive(xs) {
+			font-size: 25px;
+		}
 	}
 
 	&__desc {
 		margin-top: 5px;
 		font-size: 20px;
 		color: #A0A0A0;
+
+		@include responsive(md) {
+			text-align: center;
+		}
+
+		@include responsive(sm) {
+			font-size: 18px;
+		}
+
+		@include responsive(xs) {
+			font-size: 16px;
+		}
 	}
 
 	&__graph {
@@ -2348,6 +2447,37 @@ svg {
 		margin: 50px auto 0;
 		padding: 30px 0 125px;
 		overflow: hidden;
+
+		@include responsive(lg) {
+			padding-bottom: 110px;
+		}
+
+		@include responsive(md) {
+			width: 390px;
+			padding-bottom: 90px;
+		}
+
+		@include responsive(xs) {
+			margin: 32px 0 0;
+		}
+	}
+
+	&__img {
+		display: flex;
+
+		@include responsive(md) {
+			display: none;
+		}
+
+		&_mob {
+			display: none;
+			width: 43px;
+			margin: 0 auto;
+
+			@include responsive(md) {
+				display: flex;
+			}
+		}
 	}
 
 	&__dot {
@@ -2361,34 +2491,71 @@ svg {
 		border-radius: 50%;
 		animation: pulse-shadow 1s infinite .25s;
 
+		@include responsive(md) {
+			width: 17px;
+			height: 17px;
+			animation: pulse-shadow-mob 1s infinite .25s;
+		}
+
 		.step_1 & {
 			top: 45%;
-    		left: 3%;
+			left: 3%;
+
+			@include responsive(md) {
+				top: 11%;
+        		left: 50%;
+			}
 		}
 
 		.step_2 & {
 			top: 40%;
-    		left: 12%;
+			left: 12%;
+
+			@include responsive(md) {
+				top: 25%;
+        		left: 52%;
+			}
 		}
 
 		.step_3 & {
 			top: 43%;
-    		left: 23%;
+			left: 23%;
+
+			@include responsive(md) {
+				top: 45%;
+        		left: 44%;
+			}
 		}
 
 		.step_4 & {
 			top: 45%;
-    		left: 33%;
+			left: 33%;
+
+			@include responsive(md) {
+				top: 58%;
+        		left: 52%;
+			}
 		}
 
 		.step_5 & {
 			top: 44%;
-    		left: 42%;
+			left: 42%;
+
+			@include responsive(md) {
+				top: 78%;
+        		left: 50%;
+			}
 		}
 
 		.step_6 & {
 			top: 38%;
-    		left: 55%;
+			left: 55%;
+
+			@include responsive(md) {
+				top: -8%;
+        		left: 56%;
+				transition: initial;
+			}
 		}
 
 		.step_7 & {
@@ -2398,17 +2565,17 @@ svg {
 
 		.step_8 & {
 			top: 13%;
-    		left: 79%;
+			left: 79%;
 		}
 
 		.step_9 & {
 			top: 5%;
-    		left: 94%;
+			left: 94%;
 		}
 
 		.step_10 & {
 			top: 51%;
-    		left: -5%;
+			left: -5%;
 			transition: initial;
 		}
 	}
@@ -2426,36 +2593,72 @@ svg {
 		color: #000;
 		z-index: 1;
 
+		@include responsive(md) {
+			font-size: 13px;
+			padding: 5px 14px;
+			border-radius: 10px;
+		}
+
 		&_1 {
 			top: 20%;
-    		left: 0%;
+			left: 0%;
 			max-width: 225px;
 			background-color: initial;
+
+			@include responsive(md) {
+				top: 0%;
+				left: 5%;
+				max-width: 160px;
+			}
 		}
 
 		&_2 {
 			top: 25%;
-    		left: 27%;
+			left: 27%;
 			max-width: 155px;
+
+			@include responsive(md) {
+				top: 22%;
+    			left: 60%;
+				max-width: 137px;
+			}
 		}
 
 		&_3 {
 			top: 16%;
-    		left: 46%;
+			left: 46%;
 			max-width: 176px;
+
+			@include responsive(md) {
+				top: 42%;
+    			left: 6%;
+				max-width: 137px;
+			}
 		}
 
 		&_4 {
 			top: 40%;
-    		left: 62%;
+			left: 62%;
 			max-width: 176px;
+
+			@include responsive(md) {
+				top: 55%;
+    			left: 60%;
+				max-width: 137px;
+			}
 		}
 
 		&_5 {
 			top: 24%;
-    		left: 74%;
+			left: 74%;
 			padding: 18px 72px;
 			background-color: initial;
+
+			@include responsive(md) {
+				top: 66%;
+				left: 12%;
+				padding: 10px 35px;
+			}
 
 			.step_9 &,
 			.step_10 {
@@ -2473,6 +2676,11 @@ svg {
 		color: #D7D9DB;
 		z-index: -1;
 
+		@include responsive(md) {
+			width: 175px;
+			height: 75px;
+		}
+
 		&_1 {
 			top: 0;
 
@@ -2486,15 +2694,48 @@ svg {
 			.step_10 {
 				color: #E8F99B;
 			}
+
+			.step_1 &,
+			.step_2 & {
+				@include responsive(md) {
+					color: #E8F99B;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					color: #D7D9DB;
+				}
+			}
 		}
 
 		&_2 {
 			bottom: 0;
 			transform: scaleY(-1);
 
+			@include responsive(md) {
+				top: 0;
+				bottom: unset;
+				transform: scaleY(1);
+				width: 142px;
+				height: 60px;
+			}
+
 			.step_9 &,
 			.step_10 {
 				color: #2174F5;
+			}
+
+			.step_5 & {
+				@include responsive(md) {
+					color: #2174F5;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					color: #D7D9DB;
+				}
 			}
 		}
 	}
@@ -2510,10 +2751,22 @@ svg {
 		opacity: .3;
 		color: #D6D6D6;
 
+		@include responsive(md) {
+			font-size: 12px;
+			font-weight: 400;
+			text-align: left;
+		}
+
 		&_1 {
 			top: 58%;
 			left: -1%;
 			max-width: 130px;
+
+			@include responsive(md) {
+				top: 15%;
+    			left: 4%;
+				max-width: 160px;
+			}
 
 			.step_1 &,
 			.step_2 &,
@@ -2527,12 +2780,34 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_1 &,
+			.step_2 &,
+			.step_3 &,
+			.step_4 &,
+			.step_5 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_2 {
 			top: 48%;
-    		left: 8%;
+			left: 8%;
 			max-width: 120px;
+
+			@include responsive(md) {
+				top: 20%;
+				left: 4%;
+				max-width: 164px;
+			}
 
 			.step_2 &,
 			.step_3 &,
@@ -2545,11 +2820,28 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_1 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_3 {
 			top: 59%;
 			left: 18%;
+
+			@include responsive(md) {
+				top: 25%;
+    			left: 4%;
+			}
 
 			.step_3 &,
 			.step_4 &,
@@ -2561,11 +2853,29 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_1 &,
+			.step_2 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_4 {
 			top: 52%;
-    		left: 30%;
+			left: 30%;
+
+			@include responsive(md) {
+				top: 35%;
+    			left: 62%;
+			}
 
 			.step_4 &,
 			.step_5 &,
@@ -2576,12 +2886,35 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_2 &,
+			.step_3 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_5 {
 			top: 56%;
-    		left: 39%;
+			left: 39%;
 			max-width: 100px;
+
+			@include responsive(lg) {
+				left: 40%;
+			}
+			
+			@include responsive(md) {
+				top: 40%;
+				left: 62%;
+				max-width: 130px;
+			}
 
 			.step_5 &,
 			.step_6 &,
@@ -2591,12 +2924,32 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_2 &,
+			.step_3 &,
+			.step_4 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_6 {
-			top: 11%;
+			top: 10%;
 			left: 62%;
 			max-width: 160px;
+
+			@include responsive(md) {
+				top: 68%;
+				left: 62%;
+				max-width: 140px;
+			}
 
 			.step_7 &,
 			.step_8 &,
@@ -2604,17 +2957,78 @@ svg {
 			.step_10 {
 				opacity: 1;
 			}
+
+			.step_4 &,
+			.step_5 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
 		}
 
 		&_7 {
 			top: 1%;
-    		left: 76%;
+			left: 76%;
 			max-width: 100px;
+
+			@include responsive(md) {
+				top: 77%;
+				left: 62%;
+				max-width: 100px;
+			}
 
 			.step_8 &,
 			.step_9 &,
 			.step_10 {
 				opacity: 1;
+			}
+
+			.step_4 &,
+			.step_5 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+		}
+
+		&_8 {
+			display: none;
+
+			@include responsive(md) {
+				top: 78%;
+				left: 4%;
+				display: block;
+				max-width: 170px;
+			}
+
+			.step_5 & {
+				@include responsive(md) {
+					opacity: 1;
+				}
+			}
+
+			.step_6 & {
+				@include responsive(md) {
+					opacity: .3;
+				}
+			}
+		}
+
+		p {
+			display: flex;
+			align-items: flex-start;
+
+			&:before {
+				@include responsive(md) {
+					content: '•';
+					margin-right: 5px;
+				}
 			}
 		}
 	}
@@ -2628,24 +3042,62 @@ svg {
 		transition: color .3s;
 		color: #DED3D3;
 
+		@include responsive(md) {
+			font-size: 12px;
+			color: #2174F5;
+		}
+
 		&_1 {
-    		left: 10%;
+			left: 10%;
+
+			@include responsive(md) {
+				top: 30%;
+				left: 10%;
+			}
 		}
 
 		&_2 {
-    		left: 32%;
+			left: 32%;
+
+			@include responsive(md) {
+				top: 45%;
+        		left: 62%;
+			}
 		}
 
 		&_3 {
-    		left: 52%;
+			left: 52%;
+
+			@include responsive(md) {
+				top: 56%;
+        		left: 12%;
+			}
 		}
 
 		&_4 {
-    		left: 67%;
+			left: 67%;
+
+			@include responsive(md) {
+				top: 82%;
+        		left: 62%;
+			}
 		}
 
 		&_5 {
-    		left: 89%;
+			left: 89%;
+
+			@include responsive(md) {
+				top: 88%;
+				left: 18%;
+			}
+		}
+
+		span {
+			display: none;
+
+			@include responsive(md) {
+				display: inline-block;
+			}
 		}
 	}
 
@@ -2659,6 +3111,10 @@ svg {
 		transform: translateY(-100%);
 		transition: color .3s;
 		color: #A0A0A0;
+
+		@include responsive(md) {
+			font-size: 20px;
+		}
 	}
 }
 
@@ -2742,7 +3198,7 @@ svg {
 			border-radius: 16px;
 			color: #000;
 
-			& + .results__item {
+			&+.results__item {
 				border-top-color: transparent;
 			}
 
@@ -2867,10 +3323,11 @@ svg {
 //blog
 .blog {
 	padding: 80px 0 20px;
+	overflow: hidden;
 
 	@include responsive(xs) {
 		padding: 40px 0 10px;
-	} 
+	}
 
 	&__title {
 		font-size: 40px;
@@ -2893,7 +3350,7 @@ svg {
 
 		@include responsive(xs) {
 			margin-top: 32px;
-		} 
+		}
 
 		&-inner {
 			width: 1190px;
@@ -2955,6 +3412,11 @@ svg {
 	border-radius: 16px;
 	user-select: none;
 
+	@include responsive(md) {
+		padding: 16px 16px 20px;
+		border-radius: 10px;
+	}
+
 	&:hover {
 		border-color: #000;
 	}
@@ -2968,6 +3430,10 @@ svg {
 			height: 100%;
 			border-radius: 8px;
 			object-fit: cover;
+
+			@include responsive(md) {
+				border-radius: 6px;
+			}
 		}
 	}
 
@@ -2975,8 +3441,13 @@ svg {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		gap: 18px;
+		gap: 12px;
 		margin-top: 26px;
+
+		@include responsive(md) {
+			gap: 5px;
+			margin-top: 20px;
+		}
 
 		p {
 			padding: 5px 12px;
@@ -2985,6 +3456,12 @@ svg {
 			border: 1px solid #e8e8e8;
 			border-radius: 22px;
 			color: #5A5A5A;
+
+			@include responsive(md) {
+				padding: 4px 8px;
+				font-size: 13px;
+				border-radius: 14px;
+			}
 		}
 	}
 
@@ -2993,19 +3470,32 @@ svg {
 		margin-top: 22px;
 		margin-bottom: 5px;
 
+		@include responsive(md) {
+			margin-top: 14px;
+		}
+
 		h3 {
 			font-size: 20px;
 			font-weight: 600;
+
+			@include responsive(md) {
+				font-size: 16px;
+			}
 		}
 	}
 
-	&__icon {
+	&__iconlink {
 		display: flex;
 		padding: 18px;
 		margin: auto 10px 0 auto;
+		transition: background-color .3s;
 		border: 1px solid #000;
 		border-radius: 50%;
 		color: #000;
+
+		&:hover {
+			background-color: rgba(#000, .1);
+		}
 
 		svg {
 			width: 14px;
@@ -3021,6 +3511,268 @@ svg {
 		height: 100%;
 		display: block;
 		font-size: 0;
+	}
+}
+
+//reviews
+.reviews {
+	padding: 80px 0 20px;
+	overflow: hidden;
+
+	@include responsive(xs) {
+		padding: 40px 0 10px;
+	}
+
+	&__title {
+		font-size: 40px;
+		font-weight: 700;
+		text-align: center;
+
+		@include responsive(xs) {
+			font-size: 25px;
+		}
+	}
+
+	&__slider {
+		display: flex;
+		flex-direction: column;
+		margin: 90px auto 0;
+
+		@include responsive(md) {
+			margin-top: 60px;
+		}
+
+		@include responsive(xs) {
+			margin-top: 32px;
+		}
+
+		&-inner {
+			width: 1190px;
+			margin: 0 auto;
+		}
+
+		.swiper {
+			padding: 0 1px;
+
+			&-slide {
+				width: calc((100% - 60px) / 4);
+				height: auto;
+
+				&.big {
+					width: calc((100% - 40px) / 2);
+
+					@include responsive(sm) {
+						width: calc((100% - 60px) / 4);
+					}
+				}
+			}
+		}
+	}
+
+	&__action {
+		display: flex;
+		justify-content: center;
+		margin-top: 64px;
+
+		@include responsive(sm) {
+			margin-top: 48px;
+		}
+
+		@include responsive(xs) {
+			margin-top: 32px;
+		}
+	}
+
+	&__pagination {
+		position: relative;
+		height: 18px;
+		margin-top: 64px;
+
+		@include responsive(sm) {
+			margin-top: 48px;
+		}
+
+		@include responsive(xs) {
+			margin-top: 32px;
+		}
+	}
+}
+
+//review
+.review {
+	position: relative;
+    display: flex;
+    flex-direction: column;
+	width: 100%;
+    height: 100%;
+	min-height: 367px;
+    padding: 35px 26px 46px;
+	background-color: #F5F5F6;
+	transition: border-color 0.3s;
+    border: 1px solid #f3f3f4;
+    border-radius: 16px;
+	overflow: hidden;
+	color: #6C6C6C;
+
+	@include responsive(xs) {
+		padding: 32px 24px;
+	}
+
+	&:hover {
+		border-color: #000;
+	}
+
+	&_blue {
+		background-color: #007bff;
+		color: #fff;
+	}
+
+	&_video,
+	&_image {
+		padding: 0;
+	}
+
+	&__img {
+		width: 100%;
+		height: 100%;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__date {
+		font-size: 13px;
+	}
+
+	&__text {
+		position: relative;
+		font-size: 16px;
+		margin-top: auto;
+
+		.big & {
+			font-size: 18px;
+
+			@include responsive(sm) {
+				font-size: 13px;
+			}
+		}
+
+		&:after {
+			content: '';
+			display: block;
+			width: 41px;
+			height: 34px;
+			margin-top: 10px;
+			margin-left: auto;
+			background-image: url('/icons/quote.svg');
+			background-size: 41px 34px;
+			background-position: center;
+			background-repeat: no-repeat;
+
+			@include responsive(sm) {
+				width: 34px;
+				height: 22px;
+				margin-top: 5px;
+				background-size: 34px 22px;
+			}
+
+			.review_blue & {
+				background-image: url('/icons/quote_white.svg');
+			}
+		}
+	}
+
+	&__person {
+		display: flex;
+		align-items: center;
+		margin-top: auto;
+
+		.review_video &,
+		.review_image & {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			align-items: flex-end;
+			width: 100%;
+			height: 100%;
+			padding: 35px 26px 46px;
+
+			@include responsive(xs) {
+				padding: 32px 24px;
+			}
+		}
+	}
+
+	&__avatar {
+		flex-shrink: 0;
+		width: 53px;
+		height: 53px;
+
+		@include responsive(xs) {
+			width: 40px;
+			height: 40px;
+		}
+
+		img {
+			border-radius: 50%;
+		}
+	}
+
+	&__about {
+		margin-left: 15px;
+	}
+
+	&__name {
+		font-size: 20px;
+		font-weight: 700;
+		color: #000;
+
+		@include responsive(xs) {
+			font-size: 16px;
+		}
+
+		.review_blue &,
+		.review_video &,
+		.review_image & {
+			color: #fff;
+		}
+	}
+
+	&__post {
+		font-size: 13px;
+		color: #B1B1B2;
+		opacity: .68;
+
+		@include responsive(xs) {
+			font-size: 11px;
+		}
+
+		.review_blue &,
+		.review_video &,
+		.review_image & {
+			color: #fff;
+		}
+	}
+
+	&__link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		font-size: 0;
+
+		svg {
+			width: 63px;
+			height: 63px;
+		}
 	}
 }
 
@@ -3160,6 +3912,1183 @@ svg {
 	}
 }
 
+//plans
+.plans {
+	padding: 90px 0 10px;
+
+	@include responsive(xs) {
+		padding-top: 50px;
+	}
+
+	&__title {
+		font-size: 40px;
+		font-weight: 700;
+		text-align: center;
+
+		@include responsive(sm) {
+			font-size: 32px;
+		}
+
+		@include responsive(xs) {
+			font-size: 25px;
+		}
+	}
+
+	&__list {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		max-width: 1050px;
+		margin: 60px auto 0;
+
+		@include responsive(md) {
+			flex-direction: column;
+			gap: 60px;
+			max-width: 350px;
+		}
+
+		@include responsive(xs) {
+			gap: 40px;
+			margin-top: 32px;
+		}
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 300px;
+
+		@include responsive(lg) {
+			max-width: 270px;
+		}
+
+		@include responsive(md) {
+			max-width: 100%;
+		}
+
+		&.max {
+			max-width: 350px;
+
+			@include responsive(lg) {
+				max-width: 304px;
+			}
+
+			@include responsive(md) {
+				max-width: 100%;
+			}
+		}
+	}
+
+	&__content {
+		display: flex;
+		width: 100%;
+		min-height: 435px;
+
+		@include responsive(md) {
+			min-height: unset;
+		}
+	}
+
+	&__card {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		padding: 52px 32px 32px;
+		margin-top: auto;
+		background-color: #f3f3f4;
+		border-radius: 16px;
+
+		&.blue {
+			background-color: #2174F5;
+		}
+
+		&.yellow {
+			background-color: #E8F99B;
+		}
+
+		&.black {
+			background-color: #171718;
+		}
+
+		.max & {
+			padding: 58px 34px 34px;
+			border-radius: 18px;
+
+			@include responsive(md) {
+				padding: 52px 32px 32px;
+				border-radius: 16px;
+			}
+		}
+
+		&-title {
+			font-size: 27px;
+			font-weight: 700;
+			color: #fff;
+
+			.yellow & {
+				color: #000;
+			}
+
+			.max & {
+				font-size: 30px;
+
+				@include responsive(md) {
+					font-size: 27px;
+				}
+			}
+		}
+
+		&-desc {
+			margin: 16px 0 10px;
+			font-size: 14px;
+
+			.blue & {
+				color: #fff;
+			}
+
+			.yellow & {
+				color: #5A5656;
+			}
+
+			.black & {
+				color: #9E9A9A;
+			}
+
+			.max & {
+				font-size: 16px;
+				margin-bottom: 25px;
+
+				@include responsive(md) {
+					font-size: 14px;
+					margin-bottom: 10px;
+				}
+			}
+		}
+
+		&-price {
+			margin-top: auto;
+			font-size: 20px;
+			font-weight: 700;
+
+			.blue & {
+				color: #fff;
+			}
+
+			.yelolw & {
+				color: #000;
+			}
+
+			.black & {
+				color: #fff;
+			}
+
+			.max & {
+				font-size: 22px;
+
+				@include responsive(md) {
+					font-size: 20px;
+				}
+			}
+
+			span {
+				font-size: 42px;
+				white-space: pre-wrap;
+
+				.blue & {
+					font-size: 40px;
+
+					@include responsive(md) {
+						font-size: 42px;
+					}
+				}
+
+				.yellow & {
+					font-size: 48px;
+
+					@include responsive(md) {
+						font-size: 42px;
+					}
+				}
+			}
+		}
+
+		&-btn {
+			align-self: center;
+			min-width: 220px;
+			padding: 16px 30px;
+			margin-top: 14px;
+			background-color: transparent;
+			border-color: #fff;
+			color: #fff;
+
+			@include responsive(md) {
+				min-width: 250px;
+				padding: 21px 30px;
+				font-size: 16px;
+			}
+
+			&:hover {
+				border-color: #fff;
+			}
+
+			.blue &:active {
+				background-color: #fff;
+    			color: #000;
+			}
+
+			.max & {
+				min-width: 250px;
+				padding: 21px 30px;
+				border-color: #000;
+				color: #000;
+			}
+		}
+	}
+
+	&__features {
+		list-style: none;
+		padding: 0;
+		margin: 55px 0 0;
+
+		@include responsive(md) {
+			margin-top: 40px;
+		}
+
+		@include responsive(xs) {
+			margin-top: 32px;
+		}
+
+		&-item {
+			display: flex;
+			align-items: center;
+
+			&:not(:first-child) {
+				margin-top: 14px;
+			}
+
+			&:before {
+				content: '';
+				flex-shrink: 0;
+				width: 22px;
+				height: 16px;
+				background-image: url('/icons/checkmark.svg');
+				background-size: 22px 16px;
+				background-position: center;
+				background-repeat: no-repeat;
+				margin-right: 12px;
+
+				@include responsive(xs) {
+					width: 14px;
+					height: 10px;
+					background-size: 14px 10px;
+				}
+			}
+
+			p {
+				font-size: 20px;
+				line-height: 130%;
+				max-width: 260px;
+
+				@include responsive(xs) {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+}
+
+//breadcrumbs
+.breadcrumbs {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+
+	@include responsive(md) {
+		display: none;
+	}
+
+	&__list {
+		display: flex;
+		align-items: center;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+  
+	&__item {
+		font-size: 18px;
+		color: #929292;
+
+		&:not(:first-child) {
+			margin-left: 12px;
+		}
+
+		&_home {
+			a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 28px;
+				height: 28px;
+			}
+
+			svg {
+				width: 20px;
+				height: 21px;
+			}
+		}
+
+		&_separator {
+			svg {
+				width: 8px;
+				height: 12px;
+			}
+		}
+	}
+  
+	&__link {
+	  text-decoration: none;
+	  transition: color .3s;
+	  color: inherit;
+  
+		&:hover {
+			color: #2174F5;
+		}
+	}
+}
+
+//targeting
+.targeting {
+	padding-top: 40px;
+	background-color: #f3f3f4;
+	overflow: hidden;
+
+	@include responsive(md) {
+		padding-top: 30px;
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		@include responsive(sm) {
+			align-items: flex-start;
+		}
+	}
+
+	&__title {
+		font-size: 49px;
+		font-weight: 700;
+		text-align: center;
+		color: #000;
+
+		@include responsive(lg) {
+			font-size: 45px;
+		}
+
+		@include responsive(md) {
+			font-size: 41px;
+		}
+
+		@include responsive(sm) {
+			font-size: 37px;
+			text-align: left;
+		}
+
+		@include responsive(xs) {
+			font-size: 33px;
+		}
+
+		span {
+			color: #2174f5;
+		}
+	}
+
+	&__slogan {
+		display: flex;
+		min-height: 72px;
+		width: 100%;
+		max-width: 567px;
+		margin: 32px auto 0;
+		font-size: 24px;
+		text-align: center;
+		color: #2174f5;
+
+		@include responsive(sm) {
+			min-height: 60px;
+			font-size: 20px;
+			text-align: left;
+		}
+
+		@include responsive(xs) {
+			min-height: 81px;
+			font-size: 18px;
+		}
+
+		p {
+			width: 100%;
+		}
+	}
+
+	&__btn {
+		margin: 32px auto 0;
+		z-index: 1;
+
+		@include responsive(xs) {
+			padding: 16px 30px;
+		}
+	}
+
+	&__details {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: -80px;
+
+		@include responsive(sm) {
+			margin-top: 10px;
+		}
+	}
+
+	&__img {
+		width: 100%;
+		max-width: 891px;
+		margin: 0 auto;
+
+		@include responsive(sm) {
+			width: 572px;
+			margin: 0;
+		}
+	}
+
+	&__social {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		width: 100%;
+		max-width: 315px;
+		padding: 12px;
+		background-color: #fff;
+		transition: transform 1s, visibility 0.2s, opacity 0.2s;
+		visibility: hidden;
+		opacity: 0;
+		border-radius: 16px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		overflow: hidden;
+		z-index: 1;
+
+		&.animated {
+			transform: translate(0, 0) !important;
+			visibility: visible;
+			opacity: 1;
+
+			&.facebook {
+				transform: translate(0, 0) rotate(-10deg) !important;
+			}
+		}
+
+		@include responsive(sm) {
+			max-width: 170px;
+			padding: 6px;
+			border-radius: 9px;
+		}
+
+		&.facebook {
+			top: 395px;
+			right: calc(50% + 150px);
+			transform: translate(-200px, 100px) rotate(-10deg);
+			z-index: 2;
+
+			@include responsive(md) {
+				top: 345px;
+        		right: calc(50% + 28px);
+			}
+			
+			@include responsive(sm) {
+				top: 220px;
+				right: calc(50% + 5px);
+			}
+		}
+
+		&.instagram {
+			top: 300px;
+			right: calc(50% + 190px);
+			transform: translateX(-300px);
+
+			@include responsive(md) {
+				top: 240px;
+				right: calc(50% + 50px);
+			}
+
+			@include responsive(sm) {
+				top: 160px;
+				right: 50%;
+			}
+		}
+
+		&.linkedin {
+			top: 235px;
+			left: calc(50% + 186px);
+			transform: translateX(300px);
+
+			@include responsive(md) {
+				top: 220px;
+				left: calc(50% + 50px);
+			}
+
+			@include responsive(sm) {
+				top: 150px;
+				left: calc(50% + 12px);
+			}
+		}
+
+		&.tiktok {
+			top: 375px;
+			left: 50%;
+			transform: translate(200px, 100px);
+
+			@include responsive(md) {
+				top: 340px;
+			}
+
+			@include responsive(sm) {
+				top: 294px;
+			}
+		}
+
+		&-icon {
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 66px;
+			height: 66px;
+			margin-right: 20px;
+			background-color: #f0f0f0;
+			border: 1px solid #000;
+			border-radius: 8px;
+
+			@include responsive(sm) {
+				width: 36px;
+				height: 36px;
+				margin-right: 6px;
+				border-radius: 5px;
+			}
+
+			svg {
+				width: 40px;
+				height: 40px;
+
+				@include responsive(sm) {
+					width: 20px;
+					height: 20px;
+				}
+			}
+
+			.facebook & {
+				background-color: #E8F99B;
+				color: #181717;
+			}
+
+			.instagram & {
+				background-color: #2174F5;
+			}
+
+			.linkedin & {
+				background-color: #181717;
+			}
+
+			.tiktok & {
+				background-color: #D7D9DB;
+				color: #181717;
+			}
+		}
+
+		&-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			max-width: 180px;
+		}
+
+		&-title {
+			font-size: 15px;
+			font-weight: 600;
+			line-height: 130%;
+			color: #000;
+
+			@include responsive(sm) {
+				font-size: 9px;
+			}
+		}
+
+		&-desc {
+			font-size: 10px;
+			color: #9D9D9D;
+
+			@include responsive(sm) {
+				font-size: 5px;
+			}
+		}
+
+		&-link {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: block;
+			width: 100%;
+			height: 100%;
+			font-size: 0;
+			background-color: transparent;
+			transition: background-color .3s;
+
+			&:hover {
+				background-color: rgba(#000, .1);
+			}
+		}
+	}
+
+	&__stats {
+		position: absolute;
+		left: calc(50% + 170px);
+		bottom: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		@include responsive(lg) {
+			position: static;
+			display: none;
+			padding: 14px 0;
+			background-color: #fff;
+		}
+
+		@include responsive(xs) {
+			padding: 8px 0;
+		}
+
+		&_mob {
+			display: none;
+
+			@include responsive(lg) {
+				display: flex;
+			}
+		}
+	}
+
+	&__stat {
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		min-width: 220px;
+		padding: 0 40px;
+		color: #000;
+
+		@include responsive(xs) {
+			min-width: 160px;
+		}
+
+		&:not(:first-child) {
+			border-left: 1px solid #000;
+		}
+
+		&-main {
+			font-size: 40px;
+			font-weight: 700;
+			line-height: 1;
+
+			@include responsive(sm) {
+				font-size: 32px;
+			}
+
+			@include responsive(xs) {
+				font-size: 25px;
+			}
+
+			p {
+				display: flex;
+			}
+		}
+
+		&-desc {
+			max-width: 180px;
+			margin-top: 12px;
+
+			@include responsive(sm) {
+				max-width: 156px;
+				margin-top: 10px;
+				font-size: 14px;
+			}
+
+			@include responsive(xs) {
+				max-width: 120px;
+				margin-top: 8px;
+				font-size: 11px;
+			}
+		}
+	}
+}
+
+//targetvalues
+.targetvalues {
+	padding-top: 80px;
+	background-color: #0A0A0A;
+
+	@include responsive(xs) {
+		padding-top: 50px;
+	}
+  
+	&__title {
+		font-size: 40px;
+		font-weight: 700;
+		text-align: center;
+		color: #fff;
+
+		@include responsive(sm) {
+			font-size: 32px;
+		}
+
+		@include responsive(xs) {
+			font-size: 25px;
+		}
+	}
+	
+	&__items {
+		padding-bottom: 60px;
+		margin-top: 60px;
+
+		@include responsive(sm) {
+			margin-top: 30px;
+		}
+
+		@include responsive(xs) {
+			width: calc(100% + 40px);
+			margin: 0 -20px;
+			padding-bottom: 32px;
+		}
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		padding: 30px 25px;
+		margin-left: 75px;
+
+		@include responsive(lg) {
+			margin-left: 0;
+		}
+
+		@include responsive(xs) {
+			padding: 25px 20px;
+		}
+
+		&:not(:last-child) {
+			border-bottom: 1px solid #929292;
+		}
+
+		&:last-child {
+			@include responsive(md) {
+				border-bottom: 1px solid #929292;
+			}
+		}
+
+		&-head {
+			display: flex;
+			align-items: flex-start;
+
+			@include responsive(md) {
+				flex-direction: column;
+			}
+		}
+
+		&-img {
+			position: relative;
+			flex-shrink: 0;
+			display: flex;
+			align-items: flex-start;
+			width: 100%;
+			max-width: 300px;
+
+			img {
+				border-radius: 16px;
+			}
+		}
+
+		&-info {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			width: 100%;
+			height: 100%;
+			padding: 24px;
+			background-color: rgba(#000, .1);
+			color: #fff;
+
+			h4 {
+				font-size: 20px;
+				font-weight: 700;
+			}
+
+			p {
+				margin-top: 2px;
+			}
+		}
+
+		&-content {
+			width: 100%;
+			margin-left: 134px;
+
+			@include responsive(lg) {
+				margin-left: 60px;
+			}
+
+			@include responsive(md) {
+				margin-top: 32px;
+				margin-left: 0;
+			}
+		}
+
+		&-btn {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0;
+			margin-bottom: 14px;
+			font-size: 27px;
+			font-weight: 700;
+			line-height: 130%;
+			text-align: left;
+			transition: transform .3s;
+			background-color: transparent;
+			border: none;
+			color: #FDFDFD;
+
+			@include responsive(md) {
+				margin-bottom: 0;
+			}
+
+			@include responsive(sm) {
+				font-size: 24px;
+			}
+
+			@include responsive(xs) {
+				font-size: 20px;
+			}
+
+			&:after {
+				content: '';
+				flex-shrink: 0;
+				width: 48px;
+				height: 48px;
+				margin-left: 30px;
+				background-image: url('/icons/arrow.svg');
+				background-size: 48px;
+				background-position: center;
+				background-repeat: no-repeat;
+				transition: transform .3s;
+				transform: rotate(0);
+				color: #fff;
+
+				@include responsive(xs) {
+					margin-left: 10px;
+					width: 34px;
+					height: 34px;
+					background-size: 34px;
+				}
+			}
+
+			&[aria-expanded="true"]:after {
+				transform: rotate(180deg);
+			}
+
+			svg {
+				width: 11px;
+				height: 19px;
+			}
+ 		}
+
+		&-desc {
+			line-height: 130%;
+			color: #929292;
+
+			@include responsive(md) {
+				display: none;
+			}
+
+			& > *:not(:first-child) {
+				margin-top: 10px;
+			}
+
+			.targetvalues__item-collapse & {
+				display: none;
+
+				@include responsive(md) {
+					display: block;
+				}
+			}
+		}
+
+		&-collapse {
+			margin-top: 32px;
+			line-height: 130%;
+			color: #929292;
+
+			@include responsive(md) {
+				margin-top: 14px;
+			}
+		}
+
+		&-text {
+			margin-top: 10px;
+
+			& > *:not(:first-child) {
+				margin-top: 10px;
+			}
+		}
+	}
+
+	&__content {
+		padding: 100px 0 60px;
+		z-index: 1;
+
+		@include responsive(sm) {
+			padding-top: 80px;
+		}
+
+		@include responsive(xs) {
+			padding-top: 50px;
+		}
+	}
+  
+	&__details {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		width: 100%;
+		max-width: 1155px;
+		margin: 0 auto;
+
+		@include responsive(md) {
+			flex-direction: column;
+		}
+	}
+  
+	&__info {
+		position: sticky;
+		top: 200px;
+		width: 100%;
+		max-width: 432px;
+		min-height: 286px;
+
+		@include responsive(md) {
+			position: static;
+			min-height: unset;
+			margin: 0 auto;
+			text-align: center;
+		}
+		
+		&-title {
+			font-size: 40px;
+			font-weight: 700;
+			line-height: 1;
+			color: #fff;
+
+			@include responsive(sm) {
+				font-size: 32px;
+			}
+
+			@include responsive(xs) {
+				font-size: 25px;
+			}
+		}
+
+		&-desc {
+			margin-top: 40px;
+			line-height: 130%;
+			color: #A6A6A6;
+
+			@include responsive(xs) {
+				margin-top: 32px;
+				font-size: 14px;
+			}
+		}
+	}
+  
+	&__cards {
+		display: flex; 
+		flex-direction: column;
+		margin-left: 150px;
+
+		@include responsive(lg) {
+			margin-left: 60px;
+		}
+
+		@include responsive(md) {
+			margin: 40px auto 0;
+		}
+	}
+
+	&__card {
+		position: sticky;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 536px;
+		min-height: 286px;
+		padding: 40px 25px 25px 48px;
+		background-color: #181717;
+		border: 1px solid #464646;
+		border-radius: 14px;
+		color: #fff;
+
+		@include responsive(lg) {
+			padding: 32px 25px;
+		}
+
+		&:not(:first-child) {
+			margin-top: 20px;
+		}
+
+		&:nth-child(1) {
+			top: 200px;
+
+			@include responsive(md) {
+				top: 140px;
+			}
+
+			@include responsive(xs) {
+				top: 100px;
+			}
+		}
+
+		&:nth-child(2) {
+			top: 220px;
+
+			@include responsive(md) {
+				top: 160px;
+			}
+
+			@include responsive(xs) {
+				top: 120px;
+			}
+		}
+
+		&:nth-child(3) {
+			top: 240px;
+
+			@include responsive(md) {
+				top: 180px;
+			}
+
+			@include responsive(xs) {
+				top: 140px;
+			}
+		}
+
+		&:nth-child(4) {
+			top: 260px;
+
+			@include responsive(md) {
+				top: 200px;
+			}
+
+			@include responsive(xs) {
+				top: 160px;
+			}
+		}
+
+		&_bg {
+			background-image: url('/images/target-card.jpg');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			border: none;
+		}
+
+		&-head {
+			display: flex;
+			align-items: center;
+		}
+
+		&-icon {
+			flex-shrink: 0;
+			width: 30px;
+			height: 30px;
+			margin-right: 20px;
+		}
+
+		&-title {
+			max-width: 340px;
+			font-size: 24px;
+			line-height: 130%;
+			font-weight: 700;
+
+			@include responsive(xs) {
+				font-size: 18px;
+			}
+		}
+
+		&-desc {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			margin-left: 50px;
+			max-width: 370px;
+			font-size: 12px;
+			line-height: 130%;
+			color: #929292;
+
+			@include responsive(xs) {
+				margin-left: 0;
+			}
+
+			.targetvalues__card_bg & {
+				color: #fff;
+			}
+		}
+
+		&-action {
+			display: flex;
+			justify-content: flex-end;
+			margin-top: auto;
+
+			@include responsive(xs) {
+				justify-content: center;
+			}
+		}
+
+		&-link {
+			min-width: 220px;
+			padding: 16px 30px;
+			font-size: 12px;
+			border: 1px solid #fff;
+
+			&:hover {
+				border-color: #fff;
+			}
+
+			.targetvalues__card_bg & {
+				background-color: transparent;
+
+				&:active {
+					background-color: #fff;
+    				color: #000;
+				}
+			}
+		}
+	}
+}
+  
+
 //footer
 .footer {
 	margin-top: -50px;
@@ -3285,7 +5214,7 @@ svg {
 			color: inherit;
 
 			&:hover {
-				color: #fff;
+				color: #2374F5;
 
 				svg {
 					transform: rotate(180deg);
@@ -3332,7 +5261,7 @@ svg {
 			color: inherit;
 
 			&:hover {
-				color: #fff;
+				color: #2374F5;
 			}
 		}
 	}
@@ -3382,7 +5311,7 @@ svg {
 			color: inherit;
 
 			&:hover {
-				color: #fff;
+				color: #2374F5;
 			}
 		}
 	}
@@ -3390,5 +5319,230 @@ svg {
 	&__addres,
 	&__time {
 		margin-top: 14px;
+	}
+}
+
+//sidebar
+.sidebar {
+	overflow-x: auto;
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		min-width: 360px;
+	}
+
+	&__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 20px;
+	}
+
+	&__logo {
+		display: flex;
+
+		&-link {
+			width: 169px;
+			height: 26px;
+			color: #000;
+		}
+	}
+
+	&__close {
+		display: flex;
+
+		&-button {
+			width: 60px;
+			height: 60px;
+			padding: 0;
+
+			&:focus {
+				box-shadow: none;
+			}
+		}
+	}
+
+	&__nav {
+		padding: 0 10px;
+		margin-top: 20px;
+	}
+
+	&__menu {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+
+		&-item {
+			&:not(:first-child) {
+				border-top: 1px solid #848484;
+			}
+
+			&_submenu.active .sidebar__subnav {
+				max-height: 600px;
+			}
+		}
+
+		&-link {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 24px 32px 24px 10px;
+			font-size: 20px;
+			font-weight: 700;
+			text-decoration: none;
+			color: #000;
+			cursor: pointer;
+
+			svg {
+				width: 8px;
+				height: 16px;
+				transition: transform .3s;
+				color: #000;
+
+				.sidebar__menu-item_submenu & {
+					transform: rotate(90deg);
+				}
+
+				.sidebar__menu-item_submenu.active & {
+					transform: rotate(270deg);
+				}
+			}
+
+			.sidebar__menu-item_submenu & {
+				color: #2174F5;
+			}
+		}
+	}
+
+	&__subnav {
+		transition: max-height .3s;
+		max-height: 0;
+		overflow: hidden;
+	}
+
+	&__submenu {
+		list-style: none;
+		width: 100%;
+		padding: 0;
+		margin: 0 0 20px;
+
+		&-link {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 13px 16px;
+			text-decoration: none;
+			transition: background-color 0.3s;
+			border-radius: 8px;
+			color: #181717;
+
+			&:hover {
+				background-color: #e9e9ea;
+
+				svg {
+					visibility: visible;
+					opacity: 1;
+				}
+			}
+
+			svg {
+				width: 17px;
+				height: 18px;
+				margin-left: 8px;
+				color: #181717;
+				transition: opacity 0.3s, visibility 0.3s;
+				visibility: hidden;
+				opacity: 0;
+			}
+		}
+	}
+
+	&__bot {
+		// flex-grow: 1;
+		margin-top: auto;
+		padding: 38px 20px;
+		background-color: #181717;
+		color: #a5a5a5;
+	}
+
+	&__phone {
+		display: flex;
+		
+		&-link {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			transition: color .3s;
+			color: inherit;
+
+			&:hover {
+				color: #2374F5;
+	
+				.sidebar__phone-icon {
+					border-color: #2374F5;
+				}
+			}
+		}
+
+		&-icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			margin-right: 12px;
+			transition: border-color .3s;
+			border: 1px solid #a5a5a5;
+			border-radius: 50%;
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&__email {
+		display: flex;
+		margin-top: 14px;
+		
+		&-link {
+			display: flex;
+			align-items: center;
+			font-weight: 500;
+			text-decoration: none;
+			transition: color .3s;
+			color: inherit;
+
+			&:hover {
+				color: #2374F5;
+				
+				.sidebar__email-icon {
+					border-color: #2374F5;
+				}
+			}
+		}
+
+		&-icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			margin-right: 12px;
+			transition: border-color .3s;
+			border: 1px solid #a5a5a5;
+			border-radius: 50%;
+		}
+
+		svg {
+			width: 19px;
+			height: 15px;
+		}
 	}
 }
